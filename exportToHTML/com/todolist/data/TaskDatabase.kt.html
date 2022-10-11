@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>TaskDatabase.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #1750eb;}
+.s3 { color: #067d17;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+TaskDatabase.kt</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.todolist.data</span>
+
+<span class="s1">import androidx.room.Database</span>
+<span class="s1">import androidx.room.RoomDatabase</span>
+<span class="s1">import androidx.sqlite.db.SupportSQLiteDatabase</span>
+<span class="s1">import com.todolist.di.ApplicationScope</span>
+<span class="s1">import dagger.Provides</span>
+<span class="s1">import kotlinx.coroutines.CoroutineScope</span>
+<span class="s1">import kotlinx.coroutines.GlobalScope</span>
+<span class="s1">import kotlinx.coroutines.SupervisorJob</span>
+<span class="s1">import kotlinx.coroutines.launch</span>
+<span class="s1">import javax.inject.Inject</span>
+<span class="s1">import javax.inject.Provider</span>
+<span class="s1">import javax.inject.Singleton</span>
+
+<span class="s1">@Database(entities = [Task::</span><span class="s0">class</span><span class="s1">], version = </span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">abstract </span><span class="s0">class </span><span class="s1">TaskDatabase : RoomDatabase() {</span>
+
+
+    <span class="s1">abstract </span><span class="s0">fun </span><span class="s1">taskDao(): TaskDao</span>
+
+
+    <span class="s0">class </span><span class="s1">Callback @Inject constructor(</span>
+        <span class="s1">private </span><span class="s0">val </span><span class="s1">database: Provider&lt;TaskDatabase&gt;,</span>
+        <span class="s1">@ApplicationScope private </span><span class="s0">val </span><span class="s1">applicationScope: CoroutineScope</span>
+    <span class="s1">) : RoomDatabase.Callback() {</span>
+
+
+        <span class="s1">override </span><span class="s0">fun </span><span class="s1">onCreate(db: SupportSQLiteDatabase) {</span>
+            <span class="s0">super</span><span class="s1">.onCreate(db)</span>
+
+
+            <span class="s0">val </span><span class="s1">dao = database.get().taskDao()</span>
+
+
+            <span class="s1">applicationScope.launch {</span>
+                <span class="s1">dao.insert(Task(</span><span class="s3">&quot;Wash the dishes&quot;</span><span class="s1">))</span>
+                <span class="s1">dao.insert(Task(</span><span class="s3">&quot;Do the laundry&quot;</span><span class="s1">))</span>
+                <span class="s1">dao.insert(Task(</span><span class="s3">&quot;Buy groceries&quot;</span><span class="s1">, important = </span><span class="s0">true</span><span class="s1">))</span>
+                <span class="s1">dao.insert(Task(</span><span class="s3">&quot;Prepare food&quot;</span><span class="s1">, completed = </span><span class="s0">true</span><span class="s1">))</span>
+                <span class="s1">dao.insert(Task(</span><span class="s3">&quot;Call mom&quot;</span><span class="s1">))</span>
+                <span class="s1">dao.insert(Task(</span><span class="s3">&quot;Visit grandma&quot;</span><span class="s1">, completed = </span><span class="s0">true</span><span class="s1">))</span>
+                <span class="s1">dao.insert(Task(</span><span class="s3">&quot;Repair my bike&quot;</span><span class="s1">))</span>
+                <span class="s1">dao.insert(Task(</span><span class="s3">&quot;Call Elon Musk&quot;</span><span class="s1">))</span>
+
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>Task.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #067d17;}
+.s3 { color: #1750eb;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Task.kt</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.todolist.data</span>
+
+<span class="s1">import android.os.Parcelable</span>
+<span class="s1">import androidx.room.Entity</span>
+<span class="s1">import androidx.room.PrimaryKey</span>
+<span class="s1">import kotlinx.parcelize.Parcelize</span>
+<span class="s1">import java.text.DateFormat</span>
+
+<span class="s1">@Entity(tableName = </span><span class="s2">&quot;task_table&quot;</span><span class="s1">)</span>
+<span class="s1">@Parcelize</span>
+
+<span class="s1">data </span><span class="s0">class </span><span class="s1">Task(</span>
+    <span class="s0">val </span><span class="s1">name: String,</span>
+    <span class="s0">val </span><span class="s1">important: Boolean = </span><span class="s0">false</span><span class="s1">,</span>
+    <span class="s0">val </span><span class="s1">completed: Boolean = </span><span class="s0">false</span><span class="s1">,</span>
+    <span class="s0">val </span><span class="s1">created: Long = System.currentTimeMillis(),</span>
+
+    <span class="s1">@PrimaryKey(autoGenerate = </span><span class="s0">true</span><span class="s1">) </span><span class="s0">val </span><span class="s1">id: Int = </span><span class="s3">0</span>
+<span class="s1">) : Parcelable {</span>
+
+    <span class="s0">val </span><span class="s1">createdDateFormatted: String</span>
+        <span class="s1">get() = DateFormat.getDateTimeInstance().format(created)</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>TaskDao.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #067d17;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+TaskDao.kt</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.todolist.data</span>
+
+<span class="s1">import androidx.room.*</span>
+<span class="s1">import kotlinx.coroutines.flow.Flow</span>
+
+<span class="s1">@Dao</span>
+<span class="s0">interface </span><span class="s1">TaskDao {</span>
+
+
+    <span class="s0">fun </span><span class="s1">getTasks(query: String, sortOrder: SortOrder, hideCompleted: Boolean): Flow&lt;List&lt;Task&gt;&gt; =</span>
+        <span class="s0">when</span><span class="s1">(sortOrder){</span>
+            <span class="s1">SortOrder.BY_DATE -&gt; getTasksSortedByDateCreated(query,hideCompleted)</span>
+            <span class="s1">SortOrder.BY_NAME -&gt; getTasksSortedByName(query,hideCompleted)</span>
+        <span class="s1">}</span>
+
+
+
+    <span class="s1">@Query(</span><span class="s2">&quot;SELECT * FROM task_table&quot;</span><span class="s1">)</span>
+    <span class="s0">fun </span><span class="s1">getAllTasks() : Flow&lt;List&lt;Task&gt;&gt;</span>
+
+    <span class="s1">@Query(</span><span class="s2">&quot;SELECT * FROM task_table WHERE(completed!=:hideCompleted OR completed=0) AND name LIKE '&amp;' || :searchQuery || '&amp;' ORDER BY important DESC,name&quot;</span><span class="s1">)</span>
+    <span class="s0">fun </span><span class="s1">getTasksSortedByName(</span>
+        <span class="s1">searchQuery: String,</span>
+        <span class="s1">hideCompleted: Boolean</span>
+    <span class="s1">): kotlinx.coroutines.flow.Flow&lt;List&lt;Task&gt;&gt;</span>
+
+
+    <span class="s1">@Query(</span><span class="s2">&quot;SELECT * FROM task_table WHERE(completed!=:hideCompleted OR completed=0) AND name LIKE '&amp;' || :searchQuery || '&amp;' ORDER BY important DESC,created&quot;</span><span class="s1">)</span>
+    <span class="s0">fun </span><span class="s1">getTasksSortedByDateCreated(</span>
+        <span class="s1">searchQuery: String,</span>
+        <span class="s1">hideCompleted: Boolean</span>
+    <span class="s1">): kotlinx.coroutines.flow.Flow&lt;List&lt;Task&gt;&gt;</span>
+
+
+    <span class="s1">@Insert(onConflict = OnConflictStrategy.REPLACE)</span>
+    <span class="s1">suspend </span><span class="s0">fun </span><span class="s1">insert(task: Task)</span>
+
+
+    <span class="s1">@Update</span>
+    <span class="s1">suspend </span><span class="s0">fun </span><span class="s1">update(task: Task)</span>
+
+
+    <span class="s1">@Delete</span>
+    <span class="s1">suspend </span><span class="s0">fun </span><span class="s1">delete(task: Task)</span>
+
+
+    <span class="s1">@Query(</span><span class="s2">&quot;DELETE FROM task_table WHERE completed=1&quot;</span><span class="s1">)</span>
+    <span class="s1">suspend </span><span class="s0">fun </span><span class="s1">deleteCompletedTasks( )</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>
