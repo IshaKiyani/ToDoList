@@ -30,7 +30,7 @@ class TasksViewModel @Inject constructor(
         viewModelScope.launch {
             aa.collect { value ->
                 Log.d("taskList", "init = ${value.size}")
-                Log.d("taskList", "init = ${value.firstOrNull()?.name ?: " No element Found"}")
+                Log.d("taskList", "init = ${value.firstOrNull()?.name ?: "No Data Found from DATABASE"}")
             }
 
         }
