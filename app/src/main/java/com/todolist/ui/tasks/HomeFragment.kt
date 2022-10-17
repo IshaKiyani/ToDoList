@@ -101,7 +101,7 @@ class HomeFragment : Fragment(R.layout.homefragment), TasksAdapter.OnItemClickLi
                     is TasksViewModel.TasksEvent.NavigateToAddTaskScreen -> {
                         val action =
                             HomeFragmentDirections.actionHomeFragmentToAddEditTaskFragment(
-                                 "New Task"
+                                "New Task"
                             )
                         findNavController().navigate(action)
 
@@ -111,7 +111,7 @@ class HomeFragment : Fragment(R.layout.homefragment), TasksAdapter.OnItemClickLi
                     is TasksViewModel.TasksEvent.NavigateToEditTaskScreen -> {
                         val action =
                             HomeFragmentDirections.actionHomeFragmentToAddEditTaskFragment(
-                                event.task.toString()
+                                event.task.name, event.task
                             )
                         findNavController().navigate(action)
 

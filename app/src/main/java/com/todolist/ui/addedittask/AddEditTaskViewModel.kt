@@ -27,7 +27,7 @@ class AddEditTaskViewModel @Inject constructor(
 
         set(value) {
             field = value
-            state.set("taskName", value)
+            state["taskName"] = value
         }
 
 
