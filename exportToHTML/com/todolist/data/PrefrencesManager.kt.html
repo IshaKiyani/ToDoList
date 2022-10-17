@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>PrefrencesManager.kt</title>
+<title>PreferencesManager.kt</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
 .s0 { color: #0033b3;}
@@ -13,7 +13,7 @@
 <table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
 <tr><td><center>
 <font face="Arial, Helvetica" color="#000000">
-PrefrencesManager.kt</font>
+PreferencesManager.kt</font>
 </center></td></tr></table>
 <pre><span class="s0">package </span><span class="s1">com.todolist.data</span>
 
@@ -31,18 +31,18 @@ PrefrencesManager.kt</font>
 <span class="s1">import javax.inject.Inject</span>
 <span class="s1">import javax.inject.Singleton</span>
 
-<span class="s1">private const </span><span class="s0">val </span><span class="s1">TAG = </span><span class="s3">&quot;PrefrencesManager&quot;</span>
+<span class="s1">private const </span><span class="s0">val </span><span class="s1">TAG = </span><span class="s3">&quot;PreferencesManager&quot;</span>
 
 <span class="s1">enum </span><span class="s0">class </span><span class="s1">SortOrder { BY_NAME, BY_DATE }</span>
 
 <span class="s1">data </span><span class="s0">class </span><span class="s1">FilterPreferences(</span><span class="s0">val </span><span class="s1">sortOrder: SortOrder, </span><span class="s0">val </span><span class="s1">hideCompleted: Boolean)</span>
 
 <span class="s1">@Singleton</span>
-<span class="s0">class </span><span class="s1">PrefrencesManager @Inject constructor(@ApplicationContext context: Context) {</span>
+<span class="s0">class </span><span class="s1">PreferencesManager @Inject constructor(@ApplicationContext context: Context) {</span>
     <span class="s1">private </span><span class="s0">val </span><span class="s1">Context._dataStore: DataStore&lt;Preferences&gt; by preferencesDataStore(</span><span class="s3">&quot;user_preferences&quot;</span><span class="s1">)</span>
     <span class="s1">private </span><span class="s0">val </span><span class="s1">dataStore = context._dataStore</span>
 
-    <span class="s0">val </span><span class="s1">prefrencesFlow = dataStore.data</span>
+    <span class="s0">val </span><span class="s1">PreferencesFlow = dataStore.data</span>
         <span class="s1">.catch { exception -&gt;</span>
 
 
@@ -54,28 +54,28 @@ PrefrencesManager.kt</font>
             <span class="s1">}</span>
         <span class="s1">}.map { preferences -&gt;</span>
             <span class="s0">val </span><span class="s1">sortOrder = SortOrder.valueOf(</span>
-                <span class="s1">preferences[PrefrencesKeys.SORT_ORDERS] ?: SortOrder.BY_DATE.name</span>
+                <span class="s1">preferences[PreferencesKeys.SORT_ORDERS] ?: SortOrder.BY_DATE.name</span>
             <span class="s1">)</span>
-            <span class="s0">val </span><span class="s1">hideCompleted = preferences[PrefrencesKeys.HIDE_COMPLETED] ?: </span><span class="s0">false</span>
+            <span class="s0">val </span><span class="s1">hideCompleted = preferences[PreferencesKeys.HIDE_COMPLETED] ?: </span><span class="s0">false</span>
             <span class="s1">FilterPreferences(sortOrder, hideCompleted)</span>
         <span class="s1">}</span>
 
 
     <span class="s1">suspend </span><span class="s0">fun </span><span class="s1">updateSortOrder(sortOrder: SortOrder) {</span>
         <span class="s1">dataStore.edit { preferences -&gt;</span>
-            <span class="s1">preferences[PrefrencesKeys.SORT_ORDERS] = sortOrder.name</span>
+            <span class="s1">preferences[PreferencesKeys.SORT_ORDERS] = sortOrder.name</span>
         <span class="s1">}</span>
     <span class="s1">}</span>
 
 
     <span class="s1">suspend </span><span class="s0">fun </span><span class="s1">updateHideCompleted(hideCompleted: Boolean) {</span>
         <span class="s1">dataStore.edit { preferences -&gt;</span>
-            <span class="s1">preferences[PrefrencesKeys.HIDE_COMPLETED] = hideCompleted</span>
+            <span class="s1">preferences[PreferencesKeys.HIDE_COMPLETED] = hideCompleted</span>
         <span class="s1">}</span>
     <span class="s1">}</span>
 
 
-    <span class="s1">private </span><span class="s0">object </span><span class="s1">PrefrencesKeys {</span>
+    <span class="s1">private </span><span class="s0">object </span><span class="s1">PreferencesKeys {</span>
         <span class="s0">val </span><span class="s1">SORT_ORDERS = stringPreferencesKey(</span><span class="s3">&quot;sort_order&quot;</span><span class="s1">)</span>
         <span class="s0">val </span><span class="s1">HIDE_COMPLETED = booleanPreferencesKey(</span><span class="s3">&quot;hide_completed&quot;</span><span class="s1">)</span>
 

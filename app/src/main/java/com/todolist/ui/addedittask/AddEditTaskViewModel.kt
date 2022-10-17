@@ -7,8 +7,6 @@ import com.todolist.data.Task
 import com.todolist.data.TaskDao
 import com.todolist.ui.ADD_TASK_RESULT_OK
 import com.todolist.ui.EDIT_TASK_RESULT_OK
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -19,7 +17,7 @@ import javax.inject.Inject
 class AddEditTaskViewModel @Inject constructor(
 
     private val taskDao: TaskDao,
-     private val state: SavedStateHandle
+    private val state: SavedStateHandle
 ) : ViewModel() {
 
 
@@ -33,7 +31,7 @@ class AddEditTaskViewModel @Inject constructor(
         }
 
 
-    var taskImportance = state.get("taskImportance") ?: task?.important ?: false
+    var taskImportance = state.get<Boolean>("taskImportance") ?: task?.important ?: false
 
 
         set(value) {

@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddEditTaskFragment : Fragment(R.layout.add_edit_tasks) {
+
     private val viewModel: AddEditTaskViewModel by viewModels()
 
 

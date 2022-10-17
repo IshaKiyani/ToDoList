@@ -3,12 +3,10 @@ package com.todolist.ui.tasks
 
 import android.util.Log
 import androidx.lifecycle.*
-import androidx.lifecycle.viewmodel.ViewModelFactoryDsl
 import com.todolist.data.*
 import com.todolist.ui.ADD_TASK_RESULT_OK
 import com.todolist.ui.EDIT_TASK_RESULT_OK
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -18,47 +16,59 @@ import javax.inject.Inject
 @HiltViewModel
 class TasksViewModel @Inject constructor(
     private val taskDao: TaskDao,
-    private val preferencesManager: PrefrencesManager,
+    private val preferencesManager: PreferencesManager,
+    //remove assisted
+
     private val state: SavedStateHandle
 ) : ViewModel() {
 
 
-    init {
+    // init {
 
-        val aa = taskDao.getAllTasks()
+//        val aa = taskDao.getAllTasks()
+//
+//        viewModelScope.launch {
+//            aa.collect { value ->
+//                Log.d("taskList", "init = ${value.size}")
+//                Log.d("taskList", "init = ${value.firstOrNull()?.name ?: "No Data Found from DATABASE"}")
+//            }
+//
+//        }
 
-        viewModelScope.launch {
-            aa.collect { value ->
-                Log.d("taskList", "init = ${value.size}")
-                Log.d("taskList", "init = ${value.firstOrNull()?.name ?: "No Data Found from DATABASE"}")
-            }
-
-        }
-
-    }
+    // }
 
     val searchQuery = state.getLiveData("searchQuery", "")
 
-    val preferencesFlow = preferencesManager.prefrencesFlow
+    val preferencesFlow = preferencesManager.preferencesFlow
 
     private val tasksEventChannel = Channel<TasksEvent>()
 
     val tasksEvent = tasksEventChannel.receiveAsFlow()
 
 
-    private val tasksflow = combine(
+    private val tasksFlow = combine(
         searchQuery.asFlow(),
         preferencesFlow
-    ) { query, filterPrefrences ->
-        Pair(query, filterPrefrences)
-    }.flatMapLatest { (query, filterPrefrences) ->
-        Log.d("taskList", "tasklist = $searchQuery")
-//        taskDao.getTasks("", filterPrefrences.sortOrder, filterPrefrences.hideCompleted)
-        taskDao.getAllTasks()
+    ) { query, filterPreferences ->
+        Pair(query, filterPreferences)
+    }.flatMapLatest { (query, filterPreferences) ->
+        Log.d("taskList", "taskList = $searchQuery")
+        //replace query with " "           ..m
+        taskDao.getTasks(query, filterPreferences.sortOrder, filterPreferences.hideCompleted)
+        //taskDao.getAllTasks()
     }
 
+//
+//     private val tasksFlow = combine(
+//        searchQuery.asFlow(),
+//        preferencesFlow
+//    ) { query, filterPreferences ->
+//        Pair(query, filterPreferences)
+//    }.flatMapLatest { (query, filterPreferences) ->
+//        taskDao.getTasks(query, filterPreferences.sortOrder, filterPreferences.hideCompleted)
+//    }
 
-    var tasks = tasksflow.asLiveData()
+    var tasks = tasksFlow.asLiveData()
 
 
     fun onSortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {
@@ -99,20 +109,20 @@ class TasksViewModel @Inject constructor(
 
     fun onAddEditResult(result: Int) {
         when (result) {
-            ADD_TASK_RESULT_OK -> showTaskSavesConfirmationMessage("Task added")
-            EDIT_TASK_RESULT_OK -> showTaskSavesConfirmationMessage("Task added")
+            ADD_TASK_RESULT_OK -> showTaskSavedConfirmationMessage("Task added")
+            EDIT_TASK_RESULT_OK -> showTaskSavedConfirmationMessage("Task updated")
 
         }
     }
 
 
-    private fun showTaskSavesConfirmationMessage(text: String) = viewModelScope.launch {
-        tasksEventChannel.send(TasksEvent.showTaskSavesConfirmationMessage(text))
+    private fun showTaskSavedConfirmationMessage(text: String) = viewModelScope.launch {
+        tasksEventChannel.send(TasksEvent.ShowTaskSavedConfirmationMessage(text))
     }
 
 
     fun onDeleteAllCompletedClick() = viewModelScope.launch {
-        tasksEventChannel.send(TasksEvent.NavigaToDeleteAllCompletedScreen)
+        tasksEventChannel.send(TasksEvent.NavigateToDeleteAllCompletedScreen)
     }
 
 
@@ -120,8 +130,8 @@ class TasksViewModel @Inject constructor(
         object NavigateToAddTaskScreen : TasksEvent()
         data class NavigateToEditTaskScreen(val task: Task) : TasksEvent()
         data class ShowUndoDeleteTaskMessage(val task: Task) : TasksEvent()
-        data class showTaskSavesConfirmationMessage(val msg: String) : TasksEvent()
-        object NavigaToDeleteAllCompletedScreen : TasksEvent()
+        data class ShowTaskSavedConfirmationMessage(val msg: String) : TasksEvent()
+        object NavigateToDeleteAllCompletedScreen : TasksEvent()
     }
 }
 

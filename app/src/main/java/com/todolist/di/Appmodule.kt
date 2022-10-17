@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Module
 
 @InstallIn(SingletonComponent::class)
-object Appmodule {
+object AppModule {
 
 
     @Provides
@@ -25,6 +25,7 @@ object Appmodule {
         callback: TaskDatabase.Callback
     ) = Room.databaseBuilder(app, TaskDatabase::class.java, "task_database")
         .fallbackToDestructiveMigration()
+        .addCallback(callback)
         .build()
 
 
@@ -35,7 +36,7 @@ object Appmodule {
     @ApplicationScope
     @Provides
     @Singleton
-    fun providesApplicationScope() = CoroutineScope(SupervisorJob())
+    fun provideApplicationScope() = CoroutineScope(SupervisorJob())
 
 }
 

@@ -31,5 +31,9 @@
     <dialog
         android:id="@+id/deletedAllCompletedDialogueFragment"
         android:name="com.todolist.ui.deletedallcompleted.DeletedAllCompletedDialogueFragment"
-        android:label="DeletedAllCompletedDialogueFragment" /><action android:id="@+id/action_global_deletedAllCompletedDialogueFragment" app:destination="@id/deletedAllCompletedDialogueFragment"/>
+        android:label="DeletedAllCompletedDialogueFragment" />
+
+    <action
+        android:id="@+id/action_global_deletedAllCompletedDialogueFragment"
+        app:destination="@id/deletedAllCompletedDialogueFragment"/>
 </navigation>

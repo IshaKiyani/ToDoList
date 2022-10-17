@@ -1,15 +1,12 @@
 package com.todolist.ui.tasks
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.o3interfaces.todolist.R
 import com.o3interfaces.todolist.databinding.HomefragmentBinding
@@ -26,7 +22,6 @@ import com.todolist.data.Task
 import com.todolist.util.exhaustive
 import com.todolist.util.onQueryTextChanged
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -38,9 +33,8 @@ class HomeFragment : Fragment(R.layout.homefragment), TasksAdapter.OnItemClickLi
 
     private lateinit var searchView: SearchView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
         super.onViewCreated(view, savedInstanceState)
+
         val binding = HomefragmentBinding.bind(view)
         val tasksAdapter = TasksAdapter(this)
 
@@ -86,7 +80,7 @@ class HomeFragment : Fragment(R.layout.homefragment), TasksAdapter.OnItemClickLi
 
 
         viewModel.tasks.observe(viewLifecycleOwner) {
-            Log.d("taskList","list = ${it.size}")
+            //    Log.d("taskList","list = ${it.size}")
             tasksAdapter.submitList((it))
         }
 
@@ -106,7 +100,9 @@ class HomeFragment : Fragment(R.layout.homefragment), TasksAdapter.OnItemClickLi
 
                     is TasksViewModel.TasksEvent.NavigateToAddTaskScreen -> {
                         val action =
-                            HomeFragmentDirections.actionHomeFragmentToAddEditTaskFragment("New Tasks")
+                            HomeFragmentDirections.actionHomeFragmentToAddEditTaskFragment(
+                                 "New Task"
+                            )
                         findNavController().navigate(action)
 
                     }
@@ -114,18 +110,20 @@ class HomeFragment : Fragment(R.layout.homefragment), TasksAdapter.OnItemClickLi
 
                     is TasksViewModel.TasksEvent.NavigateToEditTaskScreen -> {
                         val action =
-                            HomeFragmentDirections.actionHomeFragmentToAddEditTaskFragment("Edit Task")
+                            HomeFragmentDirections.actionHomeFragmentToAddEditTaskFragment(
+                                event.task.toString()
+                            )
                         findNavController().navigate(action)
 
                     }
 
 
-                    is TasksViewModel.TasksEvent.showTaskSavesConfirmationMessage -> {
+                    is TasksViewModel.TasksEvent.ShowTaskSavedConfirmationMessage -> {
                         Snackbar.make(requireView(), event.msg, Snackbar.LENGTH_LONG).show()
                     }
 
 
-                    TasksViewModel.TasksEvent.NavigaToDeleteAllCompletedScreen -> {
+                    is TasksViewModel.TasksEvent.NavigateToDeleteAllCompletedScreen -> {
                         val action =
                             HomeFragmentDirections.actionGlobalDeletedAllCompletedDialogueFragment()
                         findNavController().navigate(action)
@@ -153,17 +151,18 @@ class HomeFragment : Fragment(R.layout.homefragment), TasksAdapter.OnItemClickLi
 
 
         inflater.inflate(R.menu.menu_fragment_tasks, menu)
+
         val searchItem = menu.findItem(R.id.action_search)
         searchView = searchItem.actionView as SearchView
 
         val pendingQuery = viewModel.searchQuery.value
-        if (pendingQuery != null && pendingQuery .isNotEmpty())
+        if (pendingQuery != null && pendingQuery.isNotEmpty()) {
             searchItem.expandActionView()
-        searchView.setQuery(pendingQuery,false)
-
-            searchView.onQueryTextChanged {
-                viewModel.searchQuery.value = it
-            }
+            searchView.setQuery(pendingQuery, false)
+        }
+        searchView.onQueryTextChanged {
+            viewModel.searchQuery.value = it
+        }
 
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -191,7 +190,7 @@ class HomeFragment : Fragment(R.layout.homefragment), TasksAdapter.OnItemClickLi
 
             R.id.action_hide_completed_tasks -> {
 
-                item.isChecked = item.isChecked
+                item.isChecked = !item.isChecked
                 viewModel.onHideCompletedClick(item.isChecked)
                 true
             }
