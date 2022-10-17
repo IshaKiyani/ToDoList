@@ -3,50 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#DCDBDC"
     android:layout_height="match_parent"
     tools:context="com.todolist.ui.addedittask.AddEditTaskFragment">
 
 
     <EditText
         android:id="@+id/etTaskName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_260sdp"
+        android:layout_height="@dimen/_50sdp"
         android:hint="Task name"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:inputType="text"
+        android:layout_margin="@dimen/_30sdp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
+        android:textStyle="italic"
+        android:textColor="@color/black"
         android:id="@+id/checkBoxImportant"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/_260sdp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
         android:text="Important Tasks"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.066"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toEndOf="@+id/etTaskName"
+        app:layout_constraintStart_toStartOf="@+id/etTaskName"
+        app:layout_constraintTop_toBottomOf="@+id/etTaskName" />
 
     <TextView
         android:id="@+id/txtViewDataCreated"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="500dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+
+        app:layout_constraintEnd_toEndOf="@+id/checkBoxImportant"
+
+        app:layout_constraintStart_toStartOf="@+id/checkBoxImportant"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxImportant"
         tools:text="Data Created" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/save_task"
+        android:src="@drawable/ic_check_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="35dp"
-        android:layout_marginBottom="50dp"
-        android:src="@drawable/ic_check_mark"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

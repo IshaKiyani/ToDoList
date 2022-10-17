@@ -7,16 +7,21 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.o3interfaces.todolist.databinding.ItemComponentBinding
 import com.todolist.data.Task
 import com.o3interfaces.todolist.databinding.ItemsBinding
+import kotlinx.coroutines.flow.MutableStateFlow
 
 
 class TasksAdapter(private val listener: OnItemClickListener) :
     ListAdapter<Task, TasksAdapter.TasksViewHolder>(DiffCallback()) {
 
+    val hideCompleted = MutableStateFlow(false)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
-        val binding = ItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemComponentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TasksViewHolder(binding)
     }
 
@@ -26,7 +31,7 @@ class TasksAdapter(private val listener: OnItemClickListener) :
         holder.bind(currentItems)
     }
 
-    inner class TasksViewHolder(private val binding: ItemsBinding) :
+    inner class TasksViewHolder(private val binding: ItemComponentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -54,7 +59,7 @@ class TasksAdapter(private val listener: OnItemClickListener) :
             binding.apply {
                 checkBoxCompleted.isChecked = task.completed
                 itemName.text = task.name
-                itemName.paint.isStrikeThruText = task.completed
+                itemName.paint.isStrikeThruText = task.completed && hideCompleted.value
                 labelPriority.isVisible = task.important
 
             }
@@ -64,6 +69,7 @@ class TasksAdapter(private val listener: OnItemClickListener) :
     interface OnItemClickListener {
         fun onItemClick(task: Task)
         fun onCheckBoxClick(task: Task, isChecked: Boolean)
+        fun onHideCompletedOptionChanged(isChecked: Boolean)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Task>() {

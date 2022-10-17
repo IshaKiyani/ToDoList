@@ -6,12 +6,15 @@
         <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/drawable/ic_check_mark.xml" value="0.1" />
         <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/drawable/ic_priority.xml" value="0.2115" />
         <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/layout/add_edit_tasks.xml" value="0.1" />
+        <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/layout/add_edit_tasks.xml" value="0.25" />
         <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/layout/fragment_add_edit_tasks.xml" value="0.25" />
         <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/layout/home_fragment.xml" value="0.25" />
         <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/layout/homefragment.xml" value="0.203125" />
-        <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/layout/items.xml" value="0.1" />
+        <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/layout/item_component.xml" value="0.203125" />
+        <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/layout/items.xml" value="0.22" />
         <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/menu/menu_fragment_tasks.xml" value="0.1" />
+        <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/Users/abc/AndroidStudioProjects/ToDoList/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>

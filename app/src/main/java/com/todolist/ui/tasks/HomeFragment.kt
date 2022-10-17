@@ -146,6 +146,9 @@ class HomeFragment : Fragment(R.layout.homefragment), TasksAdapter.OnItemClickLi
         viewModel.onTaskCheckedChanged(task, isChecked)
     }
 
+    override fun onHideCompletedOptionChanged(isChecked: Boolean) {
+
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
